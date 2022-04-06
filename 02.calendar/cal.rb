@@ -86,8 +86,8 @@ end
 def main
   inputed_date = read_calendar_options
   show_calendar(year: inputed_date[:year], month: inputed_date[:month])
-# rescue StandardError => e
-#   puts error_message(e.message)
+rescue StandardError => e
+  puts error_message(e.message)
 end
 
 main
