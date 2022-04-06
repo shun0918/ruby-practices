@@ -55,6 +55,7 @@ def show_calendar(year:, month:)
       tmp_week = Array.new(7, '  ')
     end
   end
+  weeks.push tmp_week
 
   show_calendar_head(head)
   weeks.each { |week| show_calendar_week(week) }
