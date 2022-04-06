@@ -30,7 +30,7 @@ def show_calendar_head(date)
   puts '日 月 火 水 木 金 土  '
 end
 
-def show_calendar_week(weeks: [])
+def show_calendar_week(weeks = [])
   weeks.each do |day|
     day == TODAY.day.to_s.rjust(2, ' ') ? print(bg_red(day)) : print(day)
     print(' ')
@@ -86,8 +86,8 @@ end
 def main
   inputed_date = read_calendar_options
   show_calendar(year: inputed_date[:year], month: inputed_date[:month])
-rescue StandardError => e
-  puts error_message(e.message)
+# rescue StandardError => e
+#   puts error_message(e.message)
 end
 
 main
