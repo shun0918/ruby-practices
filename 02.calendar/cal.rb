@@ -30,9 +30,9 @@ def show_calendar_head(date)
   puts '日 月 火 水 木 金 土  '
 end
 
-def show_calendar_week(weeks = [])
+def show_calendar_week(weeks = [], year = MIN_YEAR - 1)
   weeks.each do |day|
-    day == TODAY.day.to_s.rjust(2, ' ') ? print(negative_color(day)) : print(day)
+    day == TODAY.day.to_s.rjust(2, ' ') && year == TODAY.year ? print(negative_color(day)) : print(day)
     print(' ')
   end
   puts
@@ -58,7 +58,7 @@ def show_calendar(year:, month:)
   weeks.push tmp_week
 
   show_calendar_head(head)
-  weeks.each { |week| show_calendar_week(week) }
+  weeks.each { |week| show_calendar_week(week, year) }
 end
 
 def read_calendar_options
