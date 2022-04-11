@@ -52,7 +52,7 @@ def show_calendar(year:, month:)
     tmp_week[date.wday] = date.day.to_s.rjust(2, ' ')
     if date.wday == 6
       weeks.push tmp_week
-      tmp_week = Array.new(7, '  ')
+      tmp_week = []
     end
   end
   weeks.push tmp_week
