@@ -40,8 +40,8 @@ end
 
 # 年月をもとにカレンダー出力
 def show_calendar(year:, month:)
-  raise '年の値が不正です' unless validate_year(year)
-  raise '月の値が不正です' unless validate_month(month)
+  raise "#{year}は年に指定できません。1970~2100で指定してください" unless validate_year(year)
+  raise "#{month}は月に指定できません。1~12で指定してください" unless validate_month(month)
 
   head = Date.new(year, month, 1)
   tail = Date.new(year, month, -1)
