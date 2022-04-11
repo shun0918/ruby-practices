@@ -17,8 +17,8 @@ def validate_month(year)
   MIN_MONTH <= year && year <= MAX_MONTH
 end
 
-def bg_red(str)
-  "\e[41m#{str}\e[0m"
+def negative_color(str)
+  "\e[47m#{str}\e[0m"
 end
 
 def error_message(str)
@@ -32,7 +32,7 @@ end
 
 def show_calendar_week(weeks = [])
   weeks.each do |day|
-    day == TODAY.day.to_s.rjust(2, ' ') ? print(bg_red(day)) : print(day)
+    day == TODAY.day.to_s.rjust(2, ' ') ? print(negative_color(day)) : print(day)
     print(' ')
   end
   puts
