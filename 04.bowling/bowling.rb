@@ -6,96 +6,53 @@ PIN_NUMBER = 10
 THROWABLE_PER_FLAME = 2
 STRIKE_STR = 'X'
 
+def split_at_separator(str, sep = SEPARATER)
+  str.split(sep)
+end
+
+def calc_pin(scores)
+  sum = 0
+  scores.each do |score|
+    sum += score == STRIKE_STR ? PIN_NUMBER : score.to_i
+  end
+  sum
+end
+
 def spare?(flame)
-  flame.size == 2 && flame.sum == PIN_NUMBER
+  flame.size == 2 && calc_pin(flame) == PIN_NUMBER
 end
 
 def strike?(flame)
   flame[0] == STRIKE_STR
 end
 
-def split_at_separator(str, sep = SEPARATER)
-  str.split(sep)
-end
-
-def calc_pin(flame)
-  sum = 0
-  flame.each do |score|
-    sum += score == STRIKE_STR ? PIN_NUMBER : score
-  end
-  sum
-end
-
-def calc_total_score(flames)
+def calc_total_score(scores)
   total = 0
-  strike_now = false
-  spare_now = false
-  flames.each_with_index do |flame, flame_index|
-    # 前回のストライク、スペア分反映
-    if strike_now
-      total += calc_pin((flame + (flames[flame_index + 1] || [])).slice(0, THROWABLE_PER_FLAME))
-    elsif spare_now
-      total += strike?(flame) ? PIN_NUMBER : flame[0]
-    end
-
-    # init
-    strike_now = false
-    spare_now = false
-
-    # 最後は普通に加算
-    if flame_index == FLAMES_PER_GAME - 1
-      total += calc_pin(flame)
-      next
-    end
-
-    # 現在のスコア加算
-    if strike? flame
-      total += PIN_NUMBER
-      strike_now = true
-    elsif spare? flame
-      total += PIN_NUMBER
-      spare_now = true
-    else
-      total += flame.sum
-    end
-  end
-  total
-end
-
-def scores_to_flames(scores)
-  flames = []
+  flame_index = 1
   current_flame = []
-  scores.each do |score|
-    # 最終フレームは
-    if flames.size >= FLAMES_PER_GAME - 1
-      current_flame.push score == STRIKE_STR ? score : score.to_i
-      next
-    end
+  scores.each_with_index do |score, score_index|
+    current_flame.push score
+    next if flame_index >= FLAMES_PER_GAME
 
-    if strike?(score)
-      flames.push [score]
+    # ストライク、スペア
+    if strike?(current_flame)
+      total += calc_pin(current_flame) + calc_pin([scores[score_index + 1], scores[score_index + 2]])
+      # @Todo OOPで共通化する
       current_flame = []
-      next
-    end
-
-    current_flame.push score.to_i
-    if current_flame.size == THROWABLE_PER_FLAME
-      flames.push current_flame
+      flame_index += 1
+    elsif current_flame.size == 2
+      # @Todo OOPで共通化する
+      total += calc_pin(current_flame) + (spare?(current_flame) ? calc_pin([scores[score_index + 1]]) : 0)
       current_flame = []
+      flame_index += 1
     end
   end
-  flames.push current_flame
-  flames
-end
-
-def game(scores)
-  flames = scores_to_flames scores
-  puts calc_total_score(flames)
+  total += calc_pin(current_flame)
 end
 
 def main
   scores = ARGV[0]
-  game split_at_separator scores
+  p calc_total_score split_at_separator scores
 end
 
 main
