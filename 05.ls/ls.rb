@@ -3,8 +3,8 @@
 COLUMN = 3
 DEFAULT_PATH = './'
 
-def print_item(item, path)
-  print "#{item.slice(path.length..)}  "
+def file_name(item, path)
+  item.slice(path.length..)
 end
 
 def max_row(items)
@@ -27,12 +27,12 @@ def blank_table(items)
   table
 end
 
-def fill_table(table, items)
+def fill_table(table, items, path)
   col = 0
   row = 0
   items.each do |item|
     # 縦に入れる
-    table[row][col] = item
+    table[row][col] = file_name(item, path)
     row += 1
     if row >= table.size || table[row][col].nil?
       col += 1
@@ -41,16 +41,16 @@ def fill_table(table, items)
   end
 end
 
-def print_items(items)
+def print_items(items, path)
   # 一覧表示させる
   table = blank_table(items)
-  fill_table(table, items)
+  fill_table(table, items, path)
   print_table(table)
 end
 
 def show_dir(path)
   items = Dir.glob("#{path}*")
-  print_items(items)
+  print_items(items, path)
 end
 
 def trailing_slash(path)
