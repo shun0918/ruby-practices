@@ -20,8 +20,8 @@ end
 def blank_table(items)
   count = items.size
   table = []
-  while count > 0
-    table.push (Array.new([COLUMN, count].min, ''))
+  while count.positive?
+    table.push(Array.new([COLUMN, count].min, ''))
     count -= COLUMN
   end
   table
