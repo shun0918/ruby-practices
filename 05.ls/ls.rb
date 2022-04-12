@@ -1,18 +1,29 @@
 # frozen_string_literal: true
 
-COLMUN = 3
+COLUMN = 3
 DEFAULT_PATH = './'
 
 def print_item(item, path)
   print "#{item.slice(path.length..)}  "
 end
 
-def show_dir(path)
-  Dir.glob("#{path}*").each_with_index do |item, index|
-    puts if index.positive? && (index % COLMUN).zero?
-    print_item(item, path)
+# def max_row(items)
+#   (items.size / COLUMN.to_f).ceil
+# end
+
+def print_table(table)
+  table.each do |rows|
+    puts rows.join('  ')
   end
-  puts
+end
+
+def print_items(items)
+  # 一覧表示させる
+end
+
+def show_dir(path)
+  items = Dir.glob("#{path}*")
+  print_items(items)
 end
 
 def trailing_slash(path)
@@ -24,4 +35,5 @@ def ls
   show_dir(path)
 end
 
-ls
+
+#
