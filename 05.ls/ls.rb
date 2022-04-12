@@ -7,9 +7,9 @@ def print_item(item, path)
   print "#{item.slice(path.length..)}  "
 end
 
-# def max_row(items)
-#   (items.size / COLUMN.to_f).ceil
-# end
+def max_row(items)
+  (items.size / COLUMN.to_f).ceil
+end
 
 def print_table(table)
   table.each do |rows|
@@ -17,8 +17,35 @@ def print_table(table)
   end
 end
 
+def blank_table(items)
+  count = items.size
+  table = []
+  while count > 0
+    table.push (Array.new([COLUMN, count].min, ''))
+    count -= COLUMN
+  end
+  table
+end
+
+def fill_table(table, items)
+  col = 0
+  row = 0
+  items.each do |item|
+    # 縦に入れる
+    table[row][col] = item
+    row += 1
+    if row >= table.size || table[row][col].nil?
+      col += 1
+      row = 0
+    end
+  end
+end
+
 def print_items(items)
   # 一覧表示させる
+  table = blank_table(items)
+  fill_table(table, items)
+  print_table(table)
 end
 
 def show_dir(path)
@@ -35,5 +62,4 @@ def ls
   show_dir(path)
 end
 
-
-#
+ls
